@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClientActivity"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:background="@drawable/gradient">
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/search"
+                android:textSize="24dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                android:layout_marginBottom="4dp">
+                <EditText
+                    android:layout_weight="3"
+                    android:id="@+id/txtTracking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="@string/tracking"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"/>
+
+                <ImageButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_search_black_24dp" />
+            </LinearLayout>
+
+            <fragment
+                android:id="@+id/cycleTimeFragment"
+                android:name="com.example.zoomelectrico.tesis_ucab.uihelpers.client.EncomiendasFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_encomiendas"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

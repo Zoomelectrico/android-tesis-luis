@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "640569792826",
+    "firebase_url": "https://tesis-luis.firebaseio.com",
+    "project_id": "tesis-luis",
+    "storage_bucket": "tesis-luis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640569792826:android:dc6adf6f06fdb18b",
+        "android_client_info": {
+          "package_name": "com.example.zoomelectrico.tesis_ucab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640569792826-s41v1ejbn6j84j4fca4rt1kgk1a8n6vi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zoomelectrico.tesis_ucab",
+            "certificate_hash": "bf90d1270ad1ddbc59b027265de9af22fd5cedd3"
+          }
+        },
+        {
+          "client_id": "640569792826-8t8c4js0tu9b00am2tjfb9tkht641t7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCep6Ab4WU9O422yK8Zk1-AmhgSijlpSao"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640569792826-8t8c4js0tu9b00am2tjfb9tkht641t7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

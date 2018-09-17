@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoadingActivity"
+    android:background="@drawable/gradient">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/gradient"
+        android:gravity="center">
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:cardCornerRadius="0dp"
+            app:cardBackgroundColor="@color/dark"
+            app:cardElevation="10dp"
+            android:layout_gravity="center">
+
+            <ProgressBar
+                android:id="@+id/progressBarBig"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="75sp"
+                android:minWidth="75sp"
+                android:padding="25dp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/layoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:padding="12dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/dark"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/titulo1"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:padding="8dp"
+                    android:textAlignment="center"/>
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="14"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/email"/>
+
+                <EditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="14"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="textPassword"
+                    android:hint="@string/password"/>
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="wrap_content"
+                    android:padding="8dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loginBtn"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="75sp"
+                    android:minWidth="75sp"
+                    android:padding="5dp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>
