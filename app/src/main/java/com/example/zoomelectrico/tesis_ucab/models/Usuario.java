@@ -7,27 +7,33 @@ import android.support.annotation.NonNull;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
+
 @IgnoreExtraProperties
 public class Usuario implements Parcelable {
 
-    private String email;
-    private String name;
-    private String tipo;
-    private String direccion;
-    private String cedula;
-    private String telefono;
+    protected String uid;
+    protected String email;
+    protected String name;
+    protected String tipo;
+    protected String direccion;
+    protected String cedula;
+    protected String telefono;
+    protected ArrayList<Encomienda> encomiendas = new ArrayList<>();
 
     public Usuario() {
 
     }
 
-    private Usuario(@NonNull Parcel in) {
+    protected Usuario(@NonNull Parcel in) {
         this.email = in.readString();
         this.name = in.readString();
         this.tipo = in.readString();
         this.direccion = in.readString();
         this.cedula = in.readString();
         this.telefono = in.readString();
+        this.encomiendas = new ArrayList<>();
+        in.readTypedList(encomiendas, Encomienda.CREATOR);
     }
 
 
@@ -38,6 +44,7 @@ public class Usuario implements Parcelable {
         this.direccion = direccion;
         this.cedula = cedula;
         this.telefono = telefono;
+        this.encomiendas = new ArrayList<>();
     }
 
 
@@ -62,6 +69,7 @@ public class Usuario implements Parcelable {
         dest.writeString(this.direccion);
         dest.writeString(this.cedula);
         dest.writeString(this.telefono);
+        dest.writeTypedList(this.encomiendas);
     }
 
     @Exclude
@@ -123,5 +131,25 @@ public class Usuario implements Parcelable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public void setUid(String Uid) {
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public ArrayList<Encomienda> getEncomiendas() {
+        return encomiendas;
+    }
+
+    public void setEncomiendas(ArrayList<Encomienda> encomiendas) {
+        this.encomiendas = encomiendas;
+    }
+
+    public void addEncomienda(Encomienda e) {
+        this.encomiendas.add(e);
     }
 }

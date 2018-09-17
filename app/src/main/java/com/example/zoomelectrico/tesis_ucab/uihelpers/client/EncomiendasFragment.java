@@ -2,6 +2,7 @@ package com.example.zoomelectrico.tesis_ucab.uihelpers.client;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,29 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zoomelectrico.tesis_ucab.R;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.client.dummy.DummyContent;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.client.dummy.DummyContent.DummyItem;
+import com.example.zoomelectrico.tesis_ucab.models.Encomienda;
+import com.example.zoomelectrico.tesis_ucab.models.Usuario;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class EncomiendasFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ArrayList<Encomienda> encomiendas = new ArrayList<>();
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public EncomiendasFragment() {
     }
 
@@ -50,18 +41,22 @@ public class EncomiendasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_encomiendas_list, container, false);
-
-        // Set the adapter
+        Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
+        if(bundle != null) {
+            Usuario user = bundle.getParcelable("user");
+            if(user != null) {
+                this.encomiendas = user.getEncomiendas();
+            }
+        }
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -70,7 +65,7 @@ public class EncomiendasFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyEncomiendasRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyEncomiendasRecyclerViewAdapter(this.encomiendas, mListener));
         }
         return view;
     }
@@ -93,18 +88,8 @@ public class EncomiendasFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Encomienda item);
     }
 }

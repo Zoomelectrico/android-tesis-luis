@@ -1,5 +1,6 @@
 package com.example.zoomelectrico.tesis_ucab.uihelpers.client;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,38 +8,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.zoomelectrico.tesis_ucab.R;
+import com.example.zoomelectrico.tesis_ucab.models.Encomienda;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.client.EncomiendasFragment.OnListFragmentInteractionListener;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.client.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyEncomiendasRecyclerViewAdapter extends RecyclerView.Adapter<MyEncomiendasRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Encomienda> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyEncomiendasRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyEncomiendasRecyclerViewAdapter(List<Encomienda> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_encomiendas, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getTrackingID());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +56,17 @@ public class MyEncomiendasRecyclerViewAdapter extends RecyclerView.Adapter<MyEnc
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public Encomienda mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mIdView.getText() + "'";
         }
     }
 }

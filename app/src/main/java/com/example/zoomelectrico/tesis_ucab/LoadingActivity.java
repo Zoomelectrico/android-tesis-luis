@@ -1,6 +1,5 @@
 package com.example.zoomelectrico.tesis_ucab;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.example.zoomelectrico.tesis_ucab.models.Administrador;
+import com.example.zoomelectrico.tesis_ucab.models.Encomienda;
+import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 import com.example.zoomelectrico.tesis_ucab.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,13 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Map;
-import java.util.Objects;
 
 public class LoadingActivity extends AppCompatActivity {
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authListener;
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +70,17 @@ public class LoadingActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUserData(String UID) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(UID);
+    private void loadUserData(final String UID) {
+        DatabaseReference ref = db.getReference("users").child(UID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Usuario user = dataSnapshot.getValue(Usuario.class);
+                final Usuario user = dataSnapshot.getValue(Usuario.class);
                 if(user != null) {
-                    goToActivity(user);
+                    user.setUid(UID);
+                    loadData(user, UID);
                 } else {
-                    startActivity(new Intent(getApplicationContext(), FailBackActivity.class));
+                    goToFailback("El usuario de la DB es nulo");
                 }
             }
             @Override
@@ -86,6 +88,87 @@ public class LoadingActivity extends AppCompatActivity {
                 Log.e("Error", databaseError.getMessage());
             }
         });
+    }
+
+    private void goToFailback(String error) {
+        Intent intent = new Intent(this, FailBackActivity.class);
+        intent.putExtra("Error", error);
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void loadData(@NonNull final Usuario user, final String UID) {
+        switch (user.getTipo()) {
+            case "cliente":
+                db.getReference().child("encomiendas").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot encomiendasSnapshot) {
+                        for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
+                            Log.e("Encomienda", "En el for");
+                            Encomienda e = encomienda.getValue(Encomienda.class);
+                            if(e != null) {
+                                if (e.getReceptor().equals(UID) || e.getRemitente().equals(UID)) {
+                                    user.addEncomienda(e);
+                                    Log.e("Encomienda", "en el if add");
+                                }
+                            }
+                        }
+                        goToActivity(user);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        goToFailback(databaseError.getMessage());
+                    }
+                });
+                break;
+            case "admin":
+                db.getReference().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        db.getReference().addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Administrador admin = new Administrador(user);
+                                DataSnapshot encomiendasSnapshot = dataSnapshot.child("encomiendas");
+                                DataSnapshot transporteSnapshot = dataSnapshot.child("transporte");
+                                if(encomiendasSnapshot != null) {
+                                    for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
+                                        Encomienda e = encomienda.getValue(Encomienda.class);
+                                        if (e != null) {
+                                            admin.addEncomienda(e);
+                                        }
+                                    }
+                                }
+                                if(transporteSnapshot != null) {
+                                    for(DataSnapshot transporte: transporteSnapshot.getChildren()) {
+                                        Transporte t = transporte.getValue(Transporte.class);
+                                        if (t != null) {
+                                            t.setPlaca(transporte.getKey());
+                                            admin.addTransporte(t);
+                                        }
+                                    }
+                                }
+                                goToActivity(admin);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                goToFailback(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                break;
+            case "trabajador":
+                break;
+            default:
+
+        }
     }
 
     private void goToActivity(@NonNull Usuario user) {

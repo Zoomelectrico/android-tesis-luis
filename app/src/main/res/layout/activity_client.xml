@@ -58,5 +58,13 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_close_black_36dp"
+            android:layout_margin="16dp" />
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>
