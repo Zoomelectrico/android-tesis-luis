@@ -27,6 +27,8 @@
             android:label="@string/title_activity_admin" />
         <activity android:name=".WorkerActivity" />
         <activity android:name=".FailBackActivity" />
+        <activity android:name=".EncomiendasAdminActivity" />
+        <activity android:name=".AddEncomiendaAdminActivity"></activity>
     </application>
 
 </manifest>
