@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zoomelectrico.tesis_ucab">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -28,7 +25,10 @@
         <activity android:name=".WorkerActivity" />
         <activity android:name=".FailBackActivity" />
         <activity android:name=".EncomiendasAdminActivity" />
-        <activity android:name=".AddEncomiendaAdminActivity"></activity>
+        <activity android:name=".AddEncomiendaAdminActivity"/>
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

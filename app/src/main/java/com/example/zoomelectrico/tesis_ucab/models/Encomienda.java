@@ -33,7 +33,6 @@ public class Encomienda implements Parcelable {
         this.remitente = in.readString();
         this.status = in.readLong();
         this.trackingID = in.readString();
-
     }
 
     @Exclude
@@ -44,7 +43,6 @@ public class Encomienda implements Parcelable {
         dest.writeString(remitente);
         dest.writeLong(status);
         dest.writeString(trackingID);
-
     }
 
     @Exclude

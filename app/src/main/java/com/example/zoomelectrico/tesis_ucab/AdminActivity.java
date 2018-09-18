@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.zoomelectrico.tesis_ucab.models.Administrador;
+import com.example.zoomelectrico.tesis_ucab.models.Usuario;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.TransporteFragment;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.dummy.DummyContent;
 
@@ -17,7 +18,7 @@ import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity implements TransporteFragment.OnListFragmentInteractionListener {
 
-    private Administrador user;
+    private Usuario user;
     private final Context context = this;
 
     @Override
