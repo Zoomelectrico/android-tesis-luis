@@ -11,16 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zoomelectrico.tesis_ucab.R;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.dummy.DummyContent;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.dummy.DummyContent.DummyItem;
+import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class TransporteFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ArrayList<Transporte> list = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,7 +61,7 @@ public class TransporteFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTransporteRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyTransporteRecyclerViewAdapter(list, mListener));
         }
         return view;
     }
@@ -96,6 +96,6 @@ public class TransporteFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Transporte item);
     }
 }

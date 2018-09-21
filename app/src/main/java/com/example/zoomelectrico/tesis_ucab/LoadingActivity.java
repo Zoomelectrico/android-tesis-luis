@@ -134,9 +134,15 @@ public class LoadingActivity extends AppCompatActivity {
                                 DataSnapshot transporteSnapshot = dataSnapshot.child("transporte");
                                 if(encomiendasSnapshot != null) {
                                     for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
-                                        Encomienda e = encomienda.getValue(Encomienda.class);
-                                        if (e != null) {
-                                            admin.addEncomienda(e);
+                                        Object o = encomiendasSnapshot.getValue(Encomienda.class);
+                                        Encomienda e;
+                                        try {
+                                            e = ((Encomienda) o);
+                                            if (e != null) {
+                                                admin.addEncomienda(e);
+                                            }
+                                        } catch(ClassCastException ex) {
+                                            Log.e("CAST Expetion", ex.getMessage());
                                         }
                                     }
                                 }
@@ -165,6 +171,7 @@ public class LoadingActivity extends AppCompatActivity {
                 });
                 break;
             case "trabajador":
+                goToActivity(user);
                 break;
             default:
 

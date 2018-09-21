@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zoomelectrico.tesis_ucab">
 
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -26,9 +30,6 @@
         <activity android:name=".FailBackActivity" />
         <activity android:name=".EncomiendasAdminActivity" />
         <activity android:name=".AddEncomiendaAdminActivity"/>
-        <meta-data
-            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="barcode" />
     </application>
 
 </manifest>

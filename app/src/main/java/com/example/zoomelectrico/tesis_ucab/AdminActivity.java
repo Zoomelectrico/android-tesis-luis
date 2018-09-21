@@ -7,12 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.example.zoomelectrico.tesis_ucab.models.Administrador;
+import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 import com.example.zoomelectrico.tesis_ucab.models.Usuario;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.TransporteFragment;
-import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.dummy.DummyContent;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -42,13 +41,21 @@ public class AdminActivity extends AppCompatActivity implements TransporteFragme
                     intent.putExtra("user", user);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_encomiendas:
+                    intent = new Intent(context, EncomiendasAdminActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_new_encomindas:
                     intent = new Intent(context, AddEncomiendaAdminActivity.class);
                     intent.putExtra("user", user);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_notifications:
-
+                case R.id.navigation_logout:
+                    FirebaseAuth.getInstance().signOut();
+                    intent = new Intent(context, LoadingActivity.class);
+                    startActivity(intent);
+                    finish();
                     return true;
             }
             return false;
@@ -56,7 +63,7 @@ public class AdminActivity extends AppCompatActivity implements TransporteFragme
     };
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Transporte item) {
 
     }
 }

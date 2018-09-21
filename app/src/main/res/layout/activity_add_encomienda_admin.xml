@@ -7,70 +7,86 @@
     android:layout_height="match_parent"
     tools:context=".AddEncomiendaAdminActivity"
     android:background="@drawable/gradient"
-    android:layout_gravity="center"
-    android:padding="20dp">
-    <LinearLayout
+    android:layout_gravity="center">
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="3dp"
-            app:cardBackgroundColor="@color/dark">
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:gravity="center"
-                android:orientation="vertical">
-                <TextView
+                android:elevation="3dp"
+                app:cardBackgroundColor="@color/dark">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="36sp"
-                    android:padding="10dp"
+                    android:padding="20dp"
                     android:gravity="center"
-                    android:layout_marginBottom="5dp"
-                    android:text="Nueva Encomienda"
-                    android:textColor="@color/white"/>
-                <EditText
-                    android:id="@+id/txtEmisorCI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/white"
-                    android:hint="Cedula Emisor"
-                    android:inputType="number"
-                    android:textColorHint="@color/white" />
-                <EditText
-                    android:id="@+id/txtReceptorCI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="@color/white"
-                    android:hint="Cedula Receptor"
-                    android:inputType="number" />
-                <Button
-                    android:id="@+id/btnAddEncomienda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Anadir"
-                    android:background="@color/colorAccent"
-                    android:textColor="@color/white"/>
-                <ProgressBar
-                    android:id="@+id/pgAddEncomienda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="35dp"
-                    android:minWidth="36dp"
-                    android:padding="6dp"
-                    android:visibility="gone"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="36sp"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:text="Nueva Encomienda"
+                        android:textColor="@color/white"/>
+                    <EditText
+                        android:id="@+id/txtEmisorCI"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/white"
+                        android:hint="Cedula Emisor"
+                        android:inputType="number"
+                        android:textColorHint="@color/white" />
+                    <EditText
+                        android:id="@+id/txtReceptorCI"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="5dp"
+                        android:textColorHint="@color/white"
+                        android:hint="Cedula Receptor"
+                        android:inputType="number" />
+                    <Button
+                        android:id="@+id/btnAddEncomienda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Anadir"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"/>
+                    <ProgressBar
+                        android:id="@+id/pgAddEncomienda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="35dp"
+                        android:minWidth="36dp"
+                        android:padding="6dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-    </LinearLayout>
+        </LinearLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:background="@color/dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/navigation"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>
