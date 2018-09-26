@@ -8,36 +8,50 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
-import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
-import com.google.android.gms.vision.barcode.Barcode;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
 
-public class WorkerActivity extends AppCompatActivity {
+
+import java.util.ArrayList;
+
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+
+public class WorkerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private final int REQUEST_CODE_CAMARA = 34;
+    private ZXingScannerView mScannerView;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_worker);
+    public void onCreate(Bundle state) {
+        super.onCreate(state);
         permissionHandler();
+        mScannerView = new ZXingScannerView(this);
+        ArrayList<BarcodeFormat> formats = new ArrayList<>();
+        formats.add(BarcodeFormat.QR_CODE);
+        mScannerView.setFormats(formats);
+        mScannerView.setAutoFocus(true);
+        setContentView(mScannerView);
     }
 
-    private void startScan() {
-        final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
-                .withActivity(WorkerActivity.this)
-                .withEnableAutoFocus(true)
-                .withBleepEnabled(true)
-                .withBackfacingCamera()
-                .withCenterTracker()
-                .withText("Scanning...")
-                .withResultListener(new MaterialBarcodeScanner.OnResultListener() {
-                    @Override
-                    public void onResult(Barcode barcode) {
-                        Log.e("Barcode", barcode.rawValue);
-                    }
-                })
-                .build();
-        materialBarcodeScanner.startScan();
+    @Override
+    public void onResume() {
+        super.onResume();
+        mScannerView.setResultHandler(this);
+        mScannerView.startCamera();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mScannerView.stopCamera();
+    }
+
+    @Override
+    public void handleResult(Result rawResult) {
+        Log.e("Result", rawResult.getText());
+        Log.e("Result", rawResult.getBarcodeFormat().toString());
+        mScannerView.resumeCameraPreview(this);
     }
 
     private void permissionHandler() {
@@ -69,4 +83,5 @@ public class WorkerActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

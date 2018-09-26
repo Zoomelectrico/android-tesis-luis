@@ -1,10 +1,13 @@
 package com.example.zoomelectrico.tesis_ucab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zoomelectrico.tesis_ucab.models.Encomienda;
+import com.example.zoomelectrico.tesis_ucab.models.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,10 +27,16 @@ import java.util.Calendar;
 
 public class AddEncomiendaAdminActivity extends AppCompatActivity {
 
+    private Context context = this;
+    private Usuario user;
+    private BottomNavigationView navigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_encomienda_admin);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         ((Button) findViewById(R.id.btnAddEncomienda)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +49,12 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
                 ((ProgressBar) findViewById(R.id.pgAddEncomienda)).setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigation.setSelectedItemId(R.id.navigation_new_encomindas);
     }
 
     private void buildEncomienda(final String e, final String r) {
@@ -79,4 +96,32 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
         });
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    finish();
+                    return true;
+                case R.id.navigation_encomiendas:
+                    intent = new Intent(context, EncomiendasAdminActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                case R.id.navigation_new_encomindas:
+                    return true;
+                case R.id.navigation_logout:
+                    FirebaseAuth.getInstance().signOut();
+                    intent = new Intent(context, LoadingActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+            }
+            return false;
+        }
+    };
 }

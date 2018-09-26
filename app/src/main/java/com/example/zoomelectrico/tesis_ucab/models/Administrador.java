@@ -41,4 +41,12 @@ public class Administrador extends Usuario implements Parcelable {
     public void addTransporte(Transporte t) {
         this.transportes.add(t);
     }
+
+    public ArrayList<Transporte> getTransportes() {
+        return transportes;
+    }
+
+    public void setTransportes(ArrayList<Transporte> transportes) {
+        this.transportes = transportes;
+    }
 }

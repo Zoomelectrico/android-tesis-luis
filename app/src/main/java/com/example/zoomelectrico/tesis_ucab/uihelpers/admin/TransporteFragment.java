@@ -2,6 +2,7 @@ package com.example.zoomelectrico.tesis_ucab.uihelpers.admin;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.example.zoomelectrico.tesis_ucab.R;
 import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TransporteFragment extends Fragment {
 
@@ -48,11 +50,18 @@ public class TransporteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transporte_list, container, false);
 
-        // Set the adapter
+        Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
+        if(bundle != null) {
+            if(bundle.getParcelableArrayList("list") == null) {
+                list = new ArrayList<>();
+            } else {
+                list = bundle.getParcelableArrayList("list");
+            }
+        }
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;

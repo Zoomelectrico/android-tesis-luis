@@ -105,13 +105,15 @@ public class LoadingActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot encomiendasSnapshot) {
                         for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
-                            Log.e("Encomienda", "En el for");
-                            Encomienda e = encomienda.getValue(Encomienda.class);
-                            if(e != null) {
-                                if (e.getReceptor().equals(UID) || e.getRemitente().equals(UID)) {
-                                    user.addEncomienda(e);
-                                    Log.e("Encomienda", "en el if add");
+                            try {
+                                Encomienda e = encomienda.getValue(Encomienda.class);
+                                if(e != null) {
+                                    if(e.getRemitente().equals(UID) || e.getReceptor().equals(UID)) {
+                                        user.addEncomienda(encomienda.getValue(Encomienda.class));
+                                    }
                                 }
+                            } catch(ClassCastException e) {
+                                Log.e("Error", e.getMessage());
                             }
                         }
                         goToActivity(user);
@@ -134,15 +136,13 @@ public class LoadingActivity extends AppCompatActivity {
                                 DataSnapshot transporteSnapshot = dataSnapshot.child("transporte");
                                 if(encomiendasSnapshot != null) {
                                     for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
-                                        Object o = encomiendasSnapshot.getValue(Encomienda.class);
-                                        Encomienda e;
                                         try {
-                                            e = ((Encomienda) o);
-                                            if (e != null) {
-                                                admin.addEncomienda(e);
+                                            Encomienda e = encomienda.getValue(Encomienda.class);
+                                            if(e != null) {
+                                                admin.addEncomienda(encomienda.getValue(Encomienda.class));
                                             }
-                                        } catch(ClassCastException ex) {
-                                            Log.e("CAST Expetion", ex.getMessage());
+                                        } catch(ClassCastException e) {
+                                            Log.e("Error", e.getMessage());
                                         }
                                     }
                                 }
@@ -186,6 +186,10 @@ public class LoadingActivity extends AppCompatActivity {
                 break;
             case "admin":
                 intent = new Intent(this, AdminActivity.class);
+                if(user instanceof Administrador) {
+                    Administrador admin = (Administrador) user;
+                    intent.putExtra("transportes", admin.getTransportes());
+                }
                 break;
             case "trabajador":
                 intent = new Intent(this, WorkerActivity.class);
