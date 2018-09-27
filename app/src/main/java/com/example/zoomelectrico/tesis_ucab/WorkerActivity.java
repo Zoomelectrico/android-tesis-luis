@@ -1,21 +1,31 @@
 package com.example.zoomelectrico.tesis_ucab;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-
 
 import java.util.ArrayList;
 
@@ -26,6 +36,12 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
 
     private final int REQUEST_CODE_CAMARA = 34;
     private ZXingScannerView mScannerView;
+
+    // Botones
+    private FloatingActionButton fabAdd, fabLogout, fabGoback;
+    // Animaciones
+    private Animation fabOpen, fabClose, fabRotateClockwise, fabRotateCounter;
+    private boolean isOpen = false;
 
     @Override
     public void onCreate(Bundle state) {
@@ -66,14 +82,14 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
         if(string != null ){
             Log.e("Results", string);
             mScannerView.stopCamera();
-            String[] datos = string.split(";");
             setContentView(R.layout.activity_worker);
-            configUI(datos);
+            configUI(string);
         }
         // mScannerView.resumeCameraPreview(this);
     }
 
-    private void configUI(String[] datos) {
+    private void configUI(@NonNull final String datos) {
+        fabConfig();
         String[] statuses = new String[] {
                 "Entrando al Sistema",
                 "Entregado al Destinatario en Oficina",
@@ -84,13 +100,105 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                 "Usuario no Encontrado",
                 "Transporte de Entrega"
         };
-        Log.e("datos",datos.toString());
-        ((TextView) findViewById(R.id.txtIdWorker)).setText(datos[0]);
-        ((TextView) findViewById(R.id.txtStatusWorker)).setText(statuses[1]);
+        final Integer[] pos = new Integer[1];
+        ((TextView) findViewById(R.id.txtIdWorker)).setText(datos);
+        final FirebaseDatabase db = FirebaseDatabase.getInstance();
+        ((TextView) findViewById(R.id.txtStatusWorker)).setText(statuses[0]);
+        ((Button) findViewById(R.id.btnChangeStatus)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pos[0] == null) {
+                    Toast.makeText(WorkerActivity.this, "Spinner", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseDatabase.getInstance().getReference("encomiendas/" + datos + "/status").setValue(pos[0], new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Log.e("Error", databaseError.getMessage());
+                                Toast.makeText(WorkerActivity.this, "Error DB", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("cool", databaseReference.getKey());
+                                setContentView(mScannerView);
+                                mScannerView.setResultHandler(WorkerActivity.this);
+                                mScannerView.startCamera();
+                            }
+                        }
+                    });
+
+                }
+
+            }
+        });
         Spinner spinner = ((Spinner) findViewById(R.id.spinnerStatus));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
         spinner.setAdapter(adapter);
+        spinner.setContentDescription("Estado del Paquete");
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                pos[0] = position;
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    private void fabConfig() {
+        // Botones
+        fabAdd = findViewById(R.id.fabAdd);
+        fabLogout = findViewById(R.id.fabLogoutWorker);
+        fabGoback = findViewById(R.id.fabBackWorker);
+
+        // Animaciones
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        fabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
+        fabRotateCounter = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_counterclockwise);
+
+        fabLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(WorkerActivity.this, LoadingActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        fabGoback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(mScannerView);
+                mScannerView.setResultHandler(WorkerActivity.this);
+                mScannerView.startCamera();
+
+            }
+        });
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isOpen) {
+                    fabAdd.startAnimation(fabRotateCounter);
+                    fabLogout.startAnimation(fabClose);
+                    fabGoback.startAnimation(fabClose);
+                    fabLogout.setClickable(false);
+                    fabGoback.setClickable(false);
+                    isOpen = false;
+                } else {
+                    fabAdd.startAnimation(fabRotateClockwise);
+                    fabLogout.startAnimation(fabOpen);
+                    fabGoback.startAnimation(fabOpen);
+                    fabLogout.setClickable(true);
+                    fabGoback.setClickable(true);
+                    isOpen = true;
+                }
+            }
+        });
     }
 
     private void permissionHandler() {
@@ -122,5 +230,6 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                 break;
         }
     }
+
 
 }

@@ -18,80 +18,123 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/dark">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark"
                     android:orientation="vertical"
-                    android:padding="20dp"
-                    android:background="@color/dark">
+                    android:padding="20dp">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="8dp"
-                        android:weightSum="4">
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:text="ID"
                             android:textColor="@color/white"
-                            android:text="ID"/>
+                            android:textSize="20sp" />
+
                         <TextView
                             android:id="@+id/txtIdWorker"
-                            android:layout_weight="3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:text="ID"
                             android:textColor="@color/white"
-                            android:text="ID"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="8dp"
-                        android:weightSum="4">
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:text="Status"
                             android:textColor="@color/white"
-                            android:text="Status"/>
+                            android:textSize="20sp" />
+
                         <TextView
                             android:id="@+id/txtStatusWorker"
-                            android:layout_weight="3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:text="Status"
                             android:textColor="@color/white"
-                            android:text="ID"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
+
                     <Spinner
                         android:id="@+id/spinnerStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:contentDescription="Status"/>
+                        
+                        android:contentDescription="Status" />
+
                     <Button
+                        android:id="@+id/btnChangeStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
                         android:background="@color/colorAccent"
+                        android:padding="8dp"
+                        android:text="Guardar"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:text="Guardar"/>
+                        android:textSize="16sp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
+
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabLogout"
+            android:id="@+id/fabLogoutWorker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:background="@color/colorAccent"
-            android:src="@drawable/ic_close_black_36dp"
-            android:layout_margin="16dp" />
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="160dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:tint="@android:color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="6dp"
+            app:rippleColor="@color/colorPrimaryDark"
+            android:src="@drawable/ic_close_white_24dp"
+            app:pressedTranslationZ="12dp"
+            android:visibility="invisible" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabBackWorker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="90dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:tint="@android:color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="6dp"
+            app:rippleColor="@color/colorPrimaryDark"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            app:pressedTranslationZ="12dp"
+            android:visibility="invisible" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="@android:color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="6dp"
+            app:rippleColor="@color/colorPrimaryDark"
+            android:src="@drawable/ic_add_white_36dp"
+            app:pressedTranslationZ="12dp" />
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>
