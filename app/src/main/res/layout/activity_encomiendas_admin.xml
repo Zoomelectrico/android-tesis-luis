@@ -49,7 +49,7 @@
             </LinearLayout>
 
             <fragment
-                android:id="@+id/cycleTimeFragment"
+                android:id="@+id/encomiendaFragment"
                 android:name="com.example.zoomelectrico.tesis_ucab.uihelpers.client.EncomiendasFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

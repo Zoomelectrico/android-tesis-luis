@@ -21,9 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
@@ -90,7 +92,7 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
 
     private void configUI(@NonNull final String datos) {
         fabConfig();
-        String[] statuses = new String[] {
+        final String[] statuses = new String[] {
                 "Entrando al Sistema",
                 "Entregado al Destinatario en Oficina",
                 "Recibido en Oficina de Transito",
@@ -101,64 +103,76 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                 "Transporte de Entrega"
         };
         final Integer[] pos = new Integer[1];
-        ((TextView) findViewById(R.id.txtIdWorker)).setText(datos);
-        final FirebaseDatabase db = FirebaseDatabase.getInstance();
-        ((TextView) findViewById(R.id.txtStatusWorker)).setText(statuses[0]);
-        ((Button) findViewById(R.id.btnChangeStatus)).setOnClickListener(new View.OnClickListener() {
+        FirebaseDatabase.getInstance()
+                .getReference("encomiendas/" + datos)
+                .child("status")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                if (pos[0] == null) {
-                    Toast.makeText(WorkerActivity.this, "Spinner", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ((TextView) findViewById(R.id.txtIdWorker)).setText(datos);
+                Integer i = dataSnapshot.getValue(int.class);
+                if (i != null) {
+                    ((TextView) findViewById(R.id.txtStatusWorker)).setText(statuses[i]);
                 } else {
-                    FirebaseDatabase.getInstance().getReference("encomiendas/" + datos + "/status").setValue(pos[0], new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            if (databaseError != null) {
-                                Log.e("Error", databaseError.getMessage());
-                                Toast.makeText(WorkerActivity.this, "Error DB", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.e("cool", databaseReference.getKey());
-                                setContentView(mScannerView);
-                                mScannerView.setResultHandler(WorkerActivity.this);
-                                mScannerView.startCamera();
-                            }
-                        }
-                    });
-
+                    ((TextView) findViewById(R.id.txtStatusWorker)).setText("Desconocido");
                 }
+                ((Button) findViewById(R.id.btnChangeStatus)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (pos[0] == null) {
+                            Toast.makeText(WorkerActivity.this, "Spinner", Toast.LENGTH_SHORT).show();
+                        } else {
+                            FirebaseDatabase.getInstance().getReference("encomiendas/" + datos + "/status").setValue(pos[0], new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    if (databaseError != null) {
+                                        Log.e("Error", databaseError.getMessage());
+                                        Toast.makeText(WorkerActivity.this, "Error DB", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.e("cool", databaseReference.getKey());
+                                        setContentView(mScannerView);
+                                        mScannerView.setResultHandler(WorkerActivity.this);
+                                        mScannerView.startCamera();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                Spinner spinner = ((Spinner) findViewById(R.id.spinnerStatus));
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(WorkerActivity.this, android.R.layout.simple_spinner_item, statuses);
+                spinner.setAdapter(adapter);
+                spinner.setContentDescription("Estado del Paquete");
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        pos[0] = position;
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Error", databaseError.getMessage());
             }
         });
-        Spinner spinner = ((Spinner) findViewById(R.id.spinnerStatus));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
-        spinner.setAdapter(adapter);
-        spinner.setContentDescription("Estado del Paquete");
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                pos[0] = position;
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
     }
 
     private void fabConfig() {
-        // Botones
         fabAdd = findViewById(R.id.fabAdd);
         fabLogout = findViewById(R.id.fabLogoutWorker);
         fabGoback = findViewById(R.id.fabBackWorker);
-
-        // Animaciones
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
         fabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         fabRotateCounter = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_counterclockwise);
-
         fabLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +182,6 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                 finish();
             }
         });
-
         fabGoback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

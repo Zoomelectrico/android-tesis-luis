@@ -48,14 +48,14 @@ public class Transporte implements Parcelable {
         dest.writeString(lat);
     }
 
-    public static Parcelable.Creator CREATOR = new Creator<Transporte> () {
+    public static Parcelable.Creator CREATOR = new Creator() {
         @Override
-        public Transporte createFromParcel(Parcel source) {
+        public Object createFromParcel(Parcel source) {
             return new Transporte(source);
         }
 
         @Override
-        public Transporte[] newArray(int size) {
+        public Object[] newArray(int size) {
             return new Transporte[size];
         }
     };

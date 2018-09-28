@@ -99,8 +99,10 @@ public class LoadingActivity extends AppCompatActivity {
 
 
     private void loadData(@NonNull final Usuario user, final String UID) {
+        Log.e("Load", "Entrando 1");
         switch (user.getTipo()) {
             case "cliente":
+                Log.e("Load", "Cliente");
                 db.getReference().child("encomiendas").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot encomiendasSnapshot) {
@@ -125,6 +127,7 @@ public class LoadingActivity extends AppCompatActivity {
                 });
                 break;
             case "admin":
+                Log.e("Load", "Admin");
                 db.getReference().addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -133,7 +136,7 @@ public class LoadingActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Administrador admin = new Administrador(user);
                                 DataSnapshot encomiendasSnapshot = dataSnapshot.child("encomiendas");
-                                DataSnapshot transporteSnapshot = dataSnapshot.child("transporte");
+                                DataSnapshot transporteSnapshot = dataSnapshot.child("transportes");
                                 if(encomiendasSnapshot != null) {
                                     for(DataSnapshot encomienda: encomiendasSnapshot.getChildren()) {
                                         try {
@@ -188,7 +191,7 @@ public class LoadingActivity extends AppCompatActivity {
                 intent = new Intent(this, AdminActivity.class);
                 if(user instanceof Administrador) {
                     Administrador admin = (Administrador) user;
-                    intent.putExtra("transportes", admin.getTransportes());
+                    intent.putParcelableArrayListExtra("transportes", admin.getTransportes());
                 }
                 break;
             case "trabajador":

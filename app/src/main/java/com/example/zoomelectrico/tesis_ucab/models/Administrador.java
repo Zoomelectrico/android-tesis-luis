@@ -49,4 +49,16 @@ public class Administrador extends Usuario implements Parcelable {
     public void setTransportes(ArrayList<Transporte> transportes) {
         this.transportes = transportes;
     }
+
+    public static Parcelable.Creator CREATOR = new Creator() {
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return new Administrador(source);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Administrador[size];
+        }
+    };
 }

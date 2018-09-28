@@ -60,7 +60,7 @@ public class MyTransporteRecyclerViewAdapter extends RecyclerView.Adapter<MyTran
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mIdView = (TextView) view.findViewById(R.id.placa);
         }
 
         @Override

@@ -46,7 +46,7 @@
                     android:src="@drawable/ic_search_black_24dp" />
             </LinearLayout>
             <fragment
-                android:id="@+id/cycleTimeFragment"
+                android:id="@+id/transporteFragment"
                 android:name="com.example.zoomelectrico.tesis_ucab.uihelpers.admin.TransporteFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

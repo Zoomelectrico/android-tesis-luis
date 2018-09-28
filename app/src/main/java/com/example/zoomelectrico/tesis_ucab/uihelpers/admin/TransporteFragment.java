@@ -7,11 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.example.zoomelectrico.tesis_ucab.R;
+import com.example.zoomelectrico.tesis_ucab.models.Administrador;
 import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 
 import java.util.ArrayList;
@@ -24,10 +27,6 @@ public class TransporteFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private ArrayList<Transporte> list = new ArrayList<>();
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public TransporteFragment() {
     }
 
@@ -52,16 +51,17 @@ public class TransporteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transporte_list, container, false);
+        View view =
+                inflater.inflate(R.layout.fragment_transporte_list, container, false);
 
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
         if(bundle != null) {
-            if(bundle.getParcelableArrayList("list") == null) {
-                list = new ArrayList<>();
-            } else {
-                list = bundle.getParcelableArrayList("list");
+            ArrayList<Transporte> transportes = bundle.getParcelableArrayList("transportes");
+            if(transportes != null) {
+                list = transportes;
             }
         }
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -70,7 +70,7 @@ public class TransporteFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTransporteRecyclerViewAdapter(list, mListener));
+            recyclerView.setAdapter(new MyTransporteRecyclerViewAdapter(this.list, mListener));
         }
         return view;
     }

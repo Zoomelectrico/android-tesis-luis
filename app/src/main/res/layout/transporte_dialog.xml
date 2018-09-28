@@ -3,13 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="20dp"
     android:layout_gravity="center"
     android:elevation="10dp"
     android:background="@color/dark">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/dark"
         android:padding="20dp">
@@ -18,9 +17,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="4"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="10dp">
             <TextView
-                android:id="@+id/txtID"
+                android:id="@+id/txtPlaca"
                 android:layout_weight="3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -28,10 +27,10 @@
                 android:textSize="20sp"
                 android:padding="8dp"/>
             <ImageButton
-                android:id="@+id/btnDismissEncomiendaDialog"
+                android:id="@+id/btnDismissTransporteDialog"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:padding="4dp"
+                android:padding="10dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close_black_36dp"
                 android:background="?selectableItemBackground"/>
@@ -42,17 +41,7 @@
             android:orientation="vertical"
             android:gravity="center">
             <TextView
-                android:id="@+id/txtEmisor"
-                android:textAlignment="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Emisor"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:padding="8dp"
-                android:layout_marginBottom="4dp"/>
-            <TextView
-                android:id="@+id/txtReceptor"
+                android:id="@+id/txtFecha"
                 android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +50,25 @@
                 android:padding="8dp"
                 android:layout_marginBottom="4dp"/>
             <TextView
-                android:id="@+id/txtStatus"
+                android:id="@+id/txtHora"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:id="@+id/txtLat"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:id="@+id/txtLon"
                 android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

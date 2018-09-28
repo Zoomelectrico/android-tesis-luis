@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tesis-Ucab</string>
+    <string name="app_name">Packages UCAB</string>
     <string name="title_activity_login">Iniciar Sesion</string>
     <string name="titulo1">Iniciar Sesion</string>
     <string name="email">Correo Electronico</string>
@@ -11,4 +11,16 @@
     <string name="title_notifications">Notifications</string>
     <string name="tracking">Codigo de Rastreo</string>
     <string name="search">Buscar</string>
+
+    <string-array name="statuses">
+        <item>Entrando al Sistema</item>
+        <item>Entregado al Destinatario en Oficina</item>
+        <item>Recibido en Oficina de Transito</item>
+        <item>Recibido en Oficina de Destino</item>
+        <item>Enviado en Transporte</item>
+        <item>Entregado al Destinatario en Direccion</item>
+        <item>Usuario no Encontrado</item>
+        <item>Transporte de Entrega</item>
+    </string-array>
+
 </resources>

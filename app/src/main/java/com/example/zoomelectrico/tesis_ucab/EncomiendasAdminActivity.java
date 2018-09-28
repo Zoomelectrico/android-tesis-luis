@@ -12,28 +12,32 @@ import com.example.zoomelectrico.tesis_ucab.models.Encomienda;
 import com.example.zoomelectrico.tesis_ucab.models.Transporte;
 import com.example.zoomelectrico.tesis_ucab.models.Usuario;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.admin.TransporteFragment;
+import com.example.zoomelectrico.tesis_ucab.uihelpers.client.EncomiendaDialog;
 import com.example.zoomelectrico.tesis_ucab.uihelpers.client.EncomiendasFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EncomiendasAdminActivity extends AppCompatActivity implements EncomiendasFragment.OnListFragmentInteractionListener{
 
     private Context context = this;
     private Usuario user;
     private BottomNavigationView navigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encomiendas_admin);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        ArrayList<Transporte> transportes = new ArrayList<>();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("list", transportes);
-        TransporteFragment fragment = new TransporteFragment();
-        fragment.setArguments(bundle);
+        user = Objects.requireNonNull(getIntent()).getParcelableExtra("user");
+        if(user != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("user", user);
+            EncomiendasFragment encomiendasFragment = new EncomiendasFragment();
+            encomiendasFragment.setArguments(bundle);
+        }
     }
 
     @Override
@@ -44,7 +48,11 @@ public class EncomiendasAdminActivity extends AppCompatActivity implements Encom
 
     @Override
     public void onListFragmentInteraction(Encomienda item) {
-
+        EncomiendaDialog dialog = new EncomiendaDialog();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("encomienda", item);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "Hola");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

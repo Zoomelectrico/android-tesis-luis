@@ -52,14 +52,14 @@ public class Encomienda implements Parcelable {
     }
 
     @Exclude
-    public static final Creator<Encomienda> CREATOR = new Creator<Encomienda>() {
+    public static Parcelable.Creator CREATOR = new Creator() {
         @Override
-        public Encomienda createFromParcel(Parcel in) {
-            return new Encomienda(in);
+        public Object createFromParcel(Parcel source) {
+            return new Encomienda(source);
         }
 
         @Override
-        public Encomienda[] newArray(int size) {
+        public Object[] newArray(int size) {
             return new Encomienda[size];
         }
     };

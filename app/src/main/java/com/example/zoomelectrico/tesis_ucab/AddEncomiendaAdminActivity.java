@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class AddEncomiendaAdminActivity extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_encomienda_admin);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        user = Objects.requireNonNull(getIntent()).getParcelableExtra("user");
         ((Button) findViewById(R.id.btnAddEncomienda)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,39 +60,28 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
     }
 
     private void buildEncomienda(final String e, final String r) {
-        Log.e("FLAG", "1");
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         final Context context = this;
         db.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("FLAG", "2");
                 String emisorID = "", receptorID = "";
                 for (DataSnapshot user: dataSnapshot.getChildren()) {
-                    Log.e("FLAG", "For 3");
                     String cedula = user.child("cedula").getValue(String.class);
                     if(e.equals(cedula)) {
-                        Log.e("FLAG", "4");
                         emisorID = user.getKey();
                     } else if (r.equals(cedula)) {
-                        Log.e("FLAG", "5");
                         receptorID = user.getKey();
                     }
                 }
-                Log.e("FLAG", "6");
                 String trackID = db.child("encomiendas").push().getKey();
-                Log.e("FLAG", "7");
                 Encomienda e = new Encomienda(Calendar.getInstance().getTime().toString(),
                         receptorID, emisorID, 1, trackID);
                 db.child("encomiendas").setValue(e);
-                Log.e("FLAG", "8");
                 Toast.makeText(context, "Datos guardados", Toast.LENGTH_SHORT).show();
-                Log.e("FLAG", "9");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("FLAG", "10***");
-                Log.e("Error", databaseError.getMessage());
                 Toast.makeText(context, "Revise su conexion de internet", Toast.LENGTH_SHORT).show();
             }
         });
