@@ -97,7 +97,7 @@ public class EncomiendaDialog extends DialogFragment {
                 }
             });
         }
-        ((ImageButton) view.findViewById(R.id.btnDismissEncomiendaDialog)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnDismissEncomiendaDialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();

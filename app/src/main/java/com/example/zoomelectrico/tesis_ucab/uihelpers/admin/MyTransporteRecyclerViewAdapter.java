@@ -23,6 +23,7 @@ public class MyTransporteRecyclerViewAdapter extends RecyclerView.Adapter<MyTran
         mListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -53,16 +54,18 @@ public class MyTransporteRecyclerViewAdapter extends RecyclerView.Adapter<MyTran
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @NonNull
         public final View mView;
         public final TextView mIdView;
         public Transporte mItem;
 
-        public ViewHolder(View view) {
+        public ViewHolder(@NonNull View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.placa);
+            mIdView = view.findViewById(R.id.placa);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mIdView.getText() + "'";

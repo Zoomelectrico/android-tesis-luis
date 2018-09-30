@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_directions_car_black_24dp"
+        android:icon="@drawable/ic_directions_car_white_24dp"
         android:title="Transportes" />
 
     <item
         android:id="@+id/navigation_encomiendas"
-        android:icon="@drawable/ic_mail_black_24dp"
+        android:icon="@drawable/ic_mail_white_24dp"
         android:title="Encomiendas" />
 
     <item
         android:id="@+id/navigation_new_encomindas"
-        android:icon="@drawable/ic_add_box_black_24dp"
+        android:icon="@drawable/ic_add_box_white_24dp"
         android:title="Nueva Encomienda" />
 
     <item
         android:id="@+id/navigation_logout"
-        android:icon="@drawable/ic_close_black_24dp"
+        android:icon="@drawable/ic_close_white_24dp"
         android:title="Log Out" />
 </menu>

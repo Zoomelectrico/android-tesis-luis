@@ -48,6 +48,7 @@ public class Usuario implements Parcelable {
     }
 
 
+    @NonNull
     @Exclude
     @Override
     public String toString() {
@@ -62,7 +63,7 @@ public class Usuario implements Parcelable {
 
     @Exclude
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(this.email);
         dest.writeString(this.name);
         dest.writeString(this.tipo);
@@ -72,10 +73,11 @@ public class Usuario implements Parcelable {
         dest.writeTypedList(this.encomiendas);
     }
 
+    @NonNull
     @Exclude
     public static Parcelable.Creator CREATOR = new Creator() {
         @Override
-        public Object createFromParcel(Parcel source) {
+        public Object createFromParcel(@NonNull Parcel source) {
             return new Usuario(source);
         }
 

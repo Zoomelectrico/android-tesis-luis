@@ -36,7 +36,7 @@ public class TransporteDialog extends DialogFragment {
             ((TextView) view.findViewById(R.id.txtLon)).setText("Longitud: \n" + data[2]);
             ((TextView) view.findViewById(R.id.txtLat)).setText("Latitud: \n" + data[3]);
         }
-        ((ImageButton) view.findViewById(R.id.btnDismissTransporteDialog)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnDismissTransporteDialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -46,15 +46,16 @@ public class TransporteDialog extends DialogFragment {
         return view;
     }
 
-    String[] sanitizeData(Transporte t) {
+    @NonNull
+    String[] sanitizeData(@NonNull Transporte t) {
         String[] data = new String[4];
         String date = t.getDate().replaceAll("Dd", "/").replaceAll("Mm", "/").replaceAll("Yy", "");
         data[0] = date;
         String hour = t.getHour().replaceAll("-", "").replaceAll("h",":").replaceAll("m",":").replaceAll("s","");
         data[1] = hour;
-        String lon = t.getLon().replaceAll("g","°").replaceAll("m","'").replaceAll("s", "\"").replaceAll("mili","");
+        String lon = t.getLon().replaceAll("g","°").replaceFirst("m","'").replaceAll("s", "\"").split("mili")[0];
         data[2] = lon;
-        String lat = t.getLat().replaceAll("g","°").replaceAll("m","'").replaceAll("s", "\"").replaceAll("mili","");
+        String lat = t.getLat().replaceAll("g","°").replaceFirst("m","'").replaceAll("s", "\"").split("mili")[0];
         data[3] = lat;
         return data;
     }

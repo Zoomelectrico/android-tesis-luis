@@ -54,16 +54,18 @@ public class MyEncomiendasRecyclerViewAdapter extends RecyclerView.Adapter<MyEnc
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @NonNull
         public final View mView;
         public final TextView mIdView;
         public Encomienda mItem;
 
-        public ViewHolder(View view) {
+        public ViewHolder(@NonNull View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mIdView = view.findViewById(R.id.item_number);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mIdView.getText() + "'";

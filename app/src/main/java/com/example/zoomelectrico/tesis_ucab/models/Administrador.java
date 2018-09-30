@@ -27,7 +27,7 @@ public class Administrador extends Usuario implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeTypedList(transportes);
     }
@@ -50,9 +50,10 @@ public class Administrador extends Usuario implements Parcelable {
         this.transportes = transportes;
     }
 
+    @NonNull
     public static Parcelable.Creator CREATOR = new Creator() {
         @Override
-        public Object createFromParcel(Parcel source) {
+        public Object createFromParcel(@NonNull Parcel source) {
             return new Administrador(source);
         }
 

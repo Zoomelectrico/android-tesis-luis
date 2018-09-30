@@ -3,6 +3,7 @@ package com.example.zoomelectrico.tesis_ucab.uihelpers.admin;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,12 +25,15 @@ public class TransporteFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
+    @Nullable
     private OnListFragmentInteractionListener mListener;
+    @Nullable
     private ArrayList<Transporte> list = new ArrayList<>();
 
     public TransporteFragment() {
     }
 
+    @NonNull
     @SuppressWarnings("unused")
     public static TransporteFragment newInstance(int columnCount) {
         TransporteFragment fragment = new TransporteFragment();

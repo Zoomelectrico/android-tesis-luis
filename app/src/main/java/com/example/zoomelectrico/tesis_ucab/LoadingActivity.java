@@ -2,9 +2,9 @@ package com.example.zoomelectrico.tesis_ucab;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 public class LoadingActivity extends AppCompatActivity {
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    @Nullable
     private FirebaseAuth.AuthStateListener authListener;
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
@@ -49,11 +50,11 @@ public class LoadingActivity extends AppCompatActivity {
             }
         };
         auth.addAuthStateListener(authListener);
-        ((Button) findViewById(R.id.btnLogin)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
-                ((Button) findViewById(R.id.btnLogin)).setVisibility(View.GONE);
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnLogin).setVisibility(View.GONE);
                 String email = ((EditText) findViewById(R.id.txtEmail)).getText().toString();
                 String password = ((EditText) findViewById(R.id.txtPassword)).getText().toString();
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -62,7 +63,7 @@ public class LoadingActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             loadUserData(task.getResult().getUser().getUid());
                         } else {
-                            Log.w("LOGIN", task.getException());
+
                         }
                     }
                 });
@@ -70,7 +71,7 @@ public class LoadingActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUserData(final String UID) {
+    private void loadUserData(@NonNull final String UID) {
         DatabaseReference ref = db.getReference("users").child(UID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,24 +86,22 @@ public class LoadingActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Error", databaseError.getMessage());
+                goToFailback(databaseError.getMessage());
             }
         });
     }
 
     private void goToFailback(String error) {
         Intent intent = new Intent(this, FailBackActivity.class);
-        intent.putExtra("Error", error);
+        intent.putExtra("error", error);
         startActivity(intent);
         finish();
     }
 
 
     private void loadData(@NonNull final Usuario user, final String UID) {
-        Log.e("Load", "Entrando 1");
         switch (user.getTipo()) {
             case "cliente":
-                Log.e("Load", "Cliente");
                 db.getReference().child("encomiendas").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot encomiendasSnapshot) {
@@ -115,7 +114,7 @@ public class LoadingActivity extends AppCompatActivity {
                                     }
                                 }
                             } catch(ClassCastException e) {
-                                Log.e("Error", e.getMessage());
+                                goToFailback(e.getMessage());
                             }
                         }
                         goToActivity(user);
@@ -127,7 +126,6 @@ public class LoadingActivity extends AppCompatActivity {
                 });
                 break;
             case "admin":
-                Log.e("Load", "Admin");
                 db.getReference().addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -145,7 +143,7 @@ public class LoadingActivity extends AppCompatActivity {
                                                 admin.addEncomienda(encomienda.getValue(Encomienda.class));
                                             }
                                         } catch(ClassCastException e) {
-                                            Log.e("Error", e.getMessage());
+
                                         }
                                     }
                                 }

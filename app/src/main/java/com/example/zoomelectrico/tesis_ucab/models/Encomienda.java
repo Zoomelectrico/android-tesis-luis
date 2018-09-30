@@ -2,6 +2,7 @@ package com.example.zoomelectrico.tesis_ucab.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -37,7 +38,7 @@ public class Encomienda implements Parcelable {
 
     @Exclude
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(fechaRecepcion);
         dest.writeString(receptor);
         dest.writeString(remitente);
@@ -51,10 +52,11 @@ public class Encomienda implements Parcelable {
         return 0;
     }
 
+    @NonNull
     @Exclude
     public static Parcelable.Creator CREATOR = new Creator() {
         @Override
-        public Object createFromParcel(Parcel source) {
+        public Object createFromParcel(@NonNull Parcel source) {
             return new Encomienda(source);
         }
 

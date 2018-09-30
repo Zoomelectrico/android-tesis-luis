@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-database:16.0.2'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.wangjiegulu:rfab:2.0.0'
     testImplementation 'junit:junit:4.12'
