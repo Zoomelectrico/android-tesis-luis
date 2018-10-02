@@ -115,16 +115,20 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
                             receptorID, emisorID, 0, trackID);
 
                     db.child("encomiendas").child(trackID).setValue(e);
-                    if (currentLocation == null) {
-                        startLocationUpdates();
-                    }
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("camion", "none");
-                    map.put("latitud", currentLocation.getLatitude());
-                    map.put("longitud", currentLocation.getLongitude());
                     HashMap<String, Double> lugar = new HashMap<>();
-                    lugar.put("lat", currentLocation.getLatitude());
-                    lugar.put("lon", currentLocation.getLongitude());
+                    map.put("camion", "none");
+                    if (currentLocation != null) {
+                        map.put("latitud", currentLocation.getLatitude());
+                        map.put("longitud", currentLocation.getLongitude());
+                        lugar.put("lat", currentLocation.getLatitude());
+                        lugar.put("lon", currentLocation.getLongitude());
+                    } else {
+                        map.put("latitud", 0.0);
+                        map.put("longitud", 0.0);
+                        lugar.put("lat", 0.0);
+                        lugar.put("lon", 0.0);
+                    }
                     map.put("lugar", lugar);
                     db.child("ubicacionGPS").child(trackID).setValue(map);
                     findViewById(R.id.btnAddEncomienda).setVisibility(View.VISIBLE);

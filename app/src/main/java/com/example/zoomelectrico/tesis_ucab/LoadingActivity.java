@@ -62,8 +62,6 @@ public class LoadingActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             loadUserData(task.getResult().getUser().getUid());
-                        } else {
-
                         }
                     }
                 });
@@ -206,6 +204,8 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        auth.removeAuthStateListener(authListener);
+        if(authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
     }
 }

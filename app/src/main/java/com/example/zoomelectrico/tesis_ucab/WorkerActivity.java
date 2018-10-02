@@ -85,21 +85,26 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
     @Override
     public void onResume() {
         super.onResume();
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
+        if(mScannerView != null) {
+            mScannerView.setResultHandler(this);
+            mScannerView.startCamera();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mScannerView.stopCamera();
+        if(mScannerView != null)
+            mScannerView.stopCamera();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mScannerView.stopCamera();
-        mScannerView = null;
+        if(mScannerView != null) {
+            mScannerView.stopCamera();
+            mScannerView = null;
+        }
 
     }
 
@@ -108,7 +113,8 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
         String string = rawResult.getText();
         if(string != null ){
             Log.e("Results", string);
-            mScannerView.stopCamera();
+            if(mScannerView != null)
+                mScannerView.stopCamera();
             setContentView(R.layout.activity_worker);
             configUI(string);
         }
@@ -234,13 +240,17 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                                     } else {
                                         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ubicacionGPS").child(datos).child("lugar");
                                         HashMap<String, Double> lugar = new HashMap<>();
-                                        lugar.put("lat", currentLocation.getLatitude());
-                                        lugar.put("lon", currentLocation.getLongitude());
-                                        ref.setValue(lugar);
+                                        if(currentLocation != null) {
+                                            lugar.put("lat", currentLocation.getLatitude());
+                                            lugar.put("lon", currentLocation.getLongitude());
+                                            ref.setValue(lugar);
+                                        }
                                         stopLocationUpdates();
-                                        setContentView(mScannerView);
-                                        mScannerView.setResultHandler(WorkerActivity.this);
-                                        mScannerView.startCamera();
+                                        if(mScannerView != null) {
+                                            setContentView(mScannerView);
+                                            mScannerView.setResultHandler(WorkerActivity.this);
+                                            mScannerView.startCamera();
+                                        }
                                     }
                                 }
                             });
@@ -293,10 +303,11 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
         fabGoback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(mScannerView);
-                mScannerView.setResultHandler(WorkerActivity.this);
-                mScannerView.startCamera();
-
+                if(mScannerView != null) {
+                    setContentView(mScannerView);
+                    mScannerView.setResultHandler(WorkerActivity.this);
+                    mScannerView.startCamera();
+                }
             }
         });
 
