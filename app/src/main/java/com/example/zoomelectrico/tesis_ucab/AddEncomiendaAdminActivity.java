@@ -123,17 +123,14 @@ public class AddEncomiendaAdminActivity extends AppCompatActivity {
                         map.put("longitud", currentLocation.getLongitude());
                         lugar.put("lat", currentLocation.getLatitude());
                         lugar.put("lon", currentLocation.getLongitude());
+                        map.put("lugar", lugar);
+                        db.child("ubicacionGPS").child(trackID).setValue(map);
+                        findViewById(R.id.btnAddEncomienda).setVisibility(View.VISIBLE);
+                        findViewById(R.id.pgAddEncomienda).setVisibility(View.GONE);
+                        Toast.makeText(context, "Datos guardados", Toast.LENGTH_SHORT).show();
                     } else {
-                        map.put("latitud", 0.0);
-                        map.put("longitud", 0.0);
-                        lugar.put("lat", 0.0);
-                        lugar.put("lon", 0.0);
+                        Toast.makeText(AddEncomiendaAdminActivity.this, "Hay un problema con la ubicacion.\nVuelva a intentar", Toast.LENGTH_SHORT).show();
                     }
-                    map.put("lugar", lugar);
-                    db.child("ubicacionGPS").child(trackID).setValue(map);
-                    findViewById(R.id.btnAddEncomienda).setVisibility(View.VISIBLE);
-                    findViewById(R.id.pgAddEncomienda).setVisibility(View.GONE);
-                    Toast.makeText(context, "Datos guardados", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Revise su conexion de internet", Toast.LENGTH_SHORT).show();
                     findViewById(R.id.btnAddEncomienda).setVisibility(View.VISIBLE);

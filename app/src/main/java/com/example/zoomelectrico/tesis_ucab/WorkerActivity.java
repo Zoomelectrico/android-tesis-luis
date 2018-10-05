@@ -199,8 +199,8 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
     }
 
     private void configUI(@NonNull final String datos) {
-        fabConfig();
         location();
+        fabConfig();
         final String[] statuses = new String[] {
                 "Entrando al Sistema",
                 "Entregado al Destinatario en Oficina",
@@ -228,6 +228,8 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                 findViewById(R.id.btnChangeStatus).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        findViewById(R.id.btnChangeStatus).setVisibility(View.GONE);
+                        findViewById(R.id.saveLoading).setVisibility(View.VISIBLE);
                         if (pos[0] == null) {
                             Toast.makeText(WorkerActivity.this, "Spinner", Toast.LENGTH_SHORT).show();
                         } else {
@@ -238,18 +240,27 @@ public class WorkerActivity extends AppCompatActivity implements ZXingScannerVie
                                         Log.e("Error", databaseError.getMessage());
                                         Toast.makeText(WorkerActivity.this, "Error DB", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch(InterruptedException ex) {
+                                            Log.e("Ex", ex.getMessage());
+                                        }
                                         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ubicacionGPS").child(datos).child("lugar");
                                         HashMap<String, Double> lugar = new HashMap<>();
                                         if(currentLocation != null) {
                                             lugar.put("lat", currentLocation.getLatitude());
                                             lugar.put("lon", currentLocation.getLongitude());
                                             ref.setValue(lugar);
-                                        }
-                                        stopLocationUpdates();
-                                        if(mScannerView != null) {
-                                            setContentView(mScannerView);
-                                            mScannerView.setResultHandler(WorkerActivity.this);
-                                            mScannerView.startCamera();
+                                            findViewById(R.id.btnChangeStatus).setVisibility(View.VISIBLE);
+                                            findViewById(R.id.saveLoading).setVisibility(View.GONE);
+                                            stopLocationUpdates();
+                                            if(mScannerView != null) {
+                                                setContentView(mScannerView);
+                                                mScannerView.setResultHandler(WorkerActivity.this);
+                                                mScannerView.startCamera();
+                                            }
+                                        } else {
+                                            Toast.makeText(WorkerActivity.this, "Problemas con la Ubicacion.\nVuelva a intentar", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
